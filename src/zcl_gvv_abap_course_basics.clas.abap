@@ -5,7 +5,10 @@ CLASS zcl_gvv_abap_course_basics DEFINITION
 
   PUBLIC SECTION.
 
+    INTERFACES if_oo_adt_classrun .
     INTERFACES zif_abap_course_basics .
+
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -13,6 +16,12 @@ ENDCLASS.
 
 
 CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+    "Task 1
+    out->write( zif_abap_course_basics~hello_world( 'Grigor' ) ).
+  ENDMETHOD.
 
 
   METHOD zif_abap_course_basics~calculator.
@@ -32,6 +41,7 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~hello_world.
+    rv_result = |Hello { iv_name }, your system user is { sy-uname }.|.
   ENDMETHOD.
 
 
