@@ -38,6 +38,9 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
     "Task 3
     out->write( zif_abap_course_basics~fizz_buzz(  ) ).
 
+    "Task 4
+    out->write( zif_abap_course_basics~date_parsing( `3 November 1979` ) ).
+
   ENDMETHOD.
 
 
@@ -69,6 +72,52 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~date_parsing.
+  "IMPORTING iv_date          TYPE string
+  "RETURNING VALUE(rv_result) TYPE dats.
+    data month_part type string.
+    data day_part type string.
+    SPLIT iv_date AT space INTO: TABLE DATA(date_parts).
+
+    if strlen( date_parts[ 1 ] ) = 1.
+        day_part = `0` && date_parts[ 1 ].
+    else.
+        day_part = date_parts[ 1 ].
+    ENDIF.
+
+    if strlen( date_parts[ 2 ] ) > 2.
+        case date_parts[ 2 ].
+            when `January`.
+               month_part = `01`.
+            when `February`.
+               month_part = `02`.
+            when `March`.
+               month_part = `03`.
+            when `April`.
+               month_part = `04`.
+            when `May`.
+               month_part = `05`.
+            when `June`.
+               month_part = `06`.
+            when `July`.
+               month_part = `07`.
+            when `August`.
+               month_part = `08`.
+            when `September`.
+               month_part = `09`.
+            when `October`.
+               month_part = `10`.
+            when `November`.
+               month_part = `11`.
+            when `December`.
+               month_part = `12`.
+        ENDCASE.
+    ELSEIF strlen( date_parts[ 2 ] ) = 1.
+        month_part = `0` && date_parts[ 2 ].
+    else.
+        month_part = date_parts[ 2 ].
+    ENDIF.
+
+    rv_result = conv d( date_parts[ 3 ] && month_part && day_part ).
   ENDMETHOD.
 
 
