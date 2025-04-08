@@ -180,70 +180,124 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
   METHOD zif_abap_course_basics~scrabble_score.
   "IMPORTING iv_word          TYPE string
   "RETURNING VALUE(rv_result) TYPE i.
-  DATA(word_length) = strlen( iv_word ).
-  data index type i.
-  data char type c.
-  data word_tmp type string.
-  word_tmp = iv_word.
-  translate word_tmp to UPPER CASE.
-  while index < word_length.
-    char = word_tmp+index(1).
-        case char.
-            when `A`.
-                rv_result = rv_result + 1.
-            when `B`.
-                rv_result = rv_result + 2.
-            when `C`.
-                rv_result = rv_result + 3.
-            when `D`.
-                rv_result = rv_result + 4.
-            when `E`.
-                rv_result = rv_result + 5.
-            when `F`.
-                rv_result = rv_result + 6.
-            when `G`.
-                rv_result = rv_result + 7.
-            when `H`.
-                rv_result = rv_result + 8.
-            when `I`.
-                rv_result = rv_result + 9.
-            when `J`.
-                rv_result = rv_result + 10.
-            when `K`.
-                rv_result = rv_result + 11.
-            when `L`.
-                rv_result = rv_result + 12.
-            when `M`.
-                rv_result = rv_result + 13.
-            when `N`.
-                rv_result = rv_result + 14.
-            when `O`.
-                rv_result = rv_result + 15.
-            when `P`.
-                rv_result = rv_result + 16.
-            when `Q`.
-                rv_result = rv_result + 17.
-            when `R`.
-                rv_result = rv_result + 18.
-            when `S`.
-                rv_result = rv_result + 19.
-            when `T`.
-                rv_result = rv_result + 20.
-            when `U`.
-                rv_result = rv_result + 21.
-            when `V`.
-                rv_result = rv_result + 22.
-            when `W`.
-                rv_result = rv_result + 23.
-            when `X`.
-                rv_result = rv_result + 24.
-            when `Y`.
-                rv_result = rv_result + 25.
-            when `Z`.
-                rv_result = rv_result + 26.
-        ENDCASE.
-    index = index + 1.
-  ENDWHILE.
+
+  "Version 1
+*  DATA(word_length) = strlen( iv_word ).
+*  data index type i.
+*  data char type c.
+*  data word_tmp type string.
+*  word_tmp = iv_word.
+*  translate word_tmp to UPPER CASE.
+*  while index < word_length.
+*    char = word_tmp+index(1).
+*        case char.
+*            when `A`.
+*                rv_result = rv_result + 1.
+*            when `B`.
+*                rv_result = rv_result + 2.
+*            when `C`.
+*                rv_result = rv_result + 3.
+*            when `D`.
+*                rv_result = rv_result + 4.
+*            when `E`.
+*                rv_result = rv_result + 5.
+*            when `F`.
+*                rv_result = rv_result + 6.
+*            when `G`.
+*                rv_result = rv_result + 7.
+*            when `H`.
+*                rv_result = rv_result + 8.
+*            when `I`.
+*                rv_result = rv_result + 9.
+*            when `J`.
+*                rv_result = rv_result + 10.
+*            when `K`.
+*                rv_result = rv_result + 11.
+*            when `L`.
+*                rv_result = rv_result + 12.
+*            when `M`.
+*                rv_result = rv_result + 13.
+*            when `N`.
+*                rv_result = rv_result + 14.
+*            when `O`.
+*                rv_result = rv_result + 15.
+*            when `P`.
+*                rv_result = rv_result + 16.
+*            when `Q`.
+*                rv_result = rv_result + 17.
+*            when `R`.
+*                rv_result = rv_result + 18.
+*            when `S`.
+*                rv_result = rv_result + 19.
+*            when `T`.
+*                rv_result = rv_result + 20.
+*            when `U`.
+*                rv_result = rv_result + 21.
+*            when `V`.
+*                rv_result = rv_result + 22.
+*            when `W`.
+*                rv_result = rv_result + 23.
+*            when `X`.
+*                rv_result = rv_result + 24.
+*            when `Y`.
+*                rv_result = rv_result + 25.
+*            when `Z`.
+*                rv_result = rv_result + 26.
+*        ENDCASE.
+*    index = index + 1.
+*  ENDWHILE.
+
+    "Version 2
+    TYPES: BEGIN OF letter_points,
+                letter type char1,
+                points type i,
+           END OF letter_points.
+
+    TYPES tt_alphabet type SORTED TABLE OF letter_points WITH UNIQUE key letter.
+
+    data alphabet type tt_alphabet.
+
+    APPEND VALUE #( letter = `A` points = 1 ) to alphabet.
+    APPEND VALUE #( letter = `B` points = 2 ) to alphabet.
+    APPEND VALUE #( letter = `C` points = 3 ) to alphabet.
+    APPEND VALUE #( letter = `D` points = 4 ) to alphabet.
+    APPEND VALUE #( letter = `E` points = 5 ) to alphabet.
+    APPEND VALUE #( letter = `F` points = 6 ) to alphabet.
+    APPEND VALUE #( letter = `G` points = 7 ) to alphabet.
+    APPEND VALUE #( letter = `H` points = 8 ) to alphabet.
+    APPEND VALUE #( letter = `I` points = 9 ) to alphabet.
+    APPEND VALUE #( letter = `J` points = 10 ) to alphabet.
+    APPEND VALUE #( letter = `K` points = 11 ) to alphabet.
+    APPEND VALUE #( letter = `L` points = 12 ) to alphabet.
+    APPEND VALUE #( letter = `M` points = 13 ) to alphabet.
+    APPEND VALUE #( letter = `N` points = 14 ) to alphabet.
+    APPEND VALUE #( letter = `O` points = 15 ) to alphabet.
+    APPEND VALUE #( letter = `P` points = 16 ) to alphabet.
+    APPEND VALUE #( letter = `Q` points = 17 ) to alphabet.
+    APPEND VALUE #( letter = `R` points = 18 ) to alphabet.
+    APPEND VALUE #( letter = `S` points = 19 ) to alphabet.
+    APPEND VALUE #( letter = `T` points = 20 ) to alphabet.
+    APPEND VALUE #( letter = `U` points = 21 ) to alphabet.
+    APPEND VALUE #( letter = `V` points = 22 ) to alphabet.
+    APPEND VALUE #( letter = `W` points = 23 ) to alphabet.
+    APPEND VALUE #( letter = `X` points = 24 ) to alphabet.
+    APPEND VALUE #( letter = `Y` points = 25 ) to alphabet.
+    APPEND VALUE #( letter = `Z` points = 26 ) to alphabet.
+
+    DATA(word_length) = strlen( iv_word ).
+    data index type i.
+    data char type c.
+    data word_tmp type string.
+    word_tmp = iv_word.
+    translate word_tmp to UPPER CASE.
+    while index < word_length.
+      char = word_tmp+index(1).
+      rv_result = rv_result + alphabet[ letter = char ]-points.
+      index = index + 1.
+    ENDWHILE.
+
+
+
 
   ENDMETHOD.
 ENDCLASS.
