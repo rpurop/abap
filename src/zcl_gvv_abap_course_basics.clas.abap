@@ -41,6 +41,14 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
     "Task 4
     out->write( zif_abap_course_basics~date_parsing( `3 November 1979` ) ).
 
+    "Task 5
+    out->write( zif_abap_course_basics~scrabble_score( `Test` ) ).
+
+    "Task 6
+    out->write( zif_abap_course_basics~get_current_date_time(  ) ).
+
+
+
   ENDMETHOD.
 
 
@@ -145,6 +153,14 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~get_current_date_time.
+  "RETURNING VALUE(rv_result) TYPE timestampl.
+    GET TIME STAMP FIELD DATA(lv_timestamp).
+    CONVERT TIME STAMP lv_timestamp TIME ZONE sy-zonlo
+        INTO TIME DATA(current_time).
+    data current_date type d.
+    current_date = sy-datum.
+    CONVERT DATE current_date TIME current_time
+        INTO TIME STAMP rv_result time zone sy-zonlo.
   ENDMETHOD.
 
 
@@ -162,5 +178,72 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~scrabble_score.
+  "IMPORTING iv_word          TYPE string
+  "RETURNING VALUE(rv_result) TYPE i.
+  DATA(word_length) = strlen( iv_word ).
+  data index type i.
+  data char type c.
+  data word_tmp type string.
+  word_tmp = iv_word.
+  translate word_tmp to UPPER CASE.
+  while index < word_length.
+    char = word_tmp+index(1).
+        case char.
+            when `A`.
+                rv_result = rv_result + 1.
+            when `B`.
+                rv_result = rv_result + 2.
+            when `C`.
+                rv_result = rv_result + 3.
+            when `D`.
+                rv_result = rv_result + 4.
+            when `E`.
+                rv_result = rv_result + 5.
+            when `F`.
+                rv_result = rv_result + 6.
+            when `G`.
+                rv_result = rv_result + 7.
+            when `H`.
+                rv_result = rv_result + 8.
+            when `I`.
+                rv_result = rv_result + 9.
+            when `J`.
+                rv_result = rv_result + 10.
+            when `K`.
+                rv_result = rv_result + 11.
+            when `L`.
+                rv_result = rv_result + 12.
+            when `M`.
+                rv_result = rv_result + 13.
+            when `N`.
+                rv_result = rv_result + 14.
+            when `O`.
+                rv_result = rv_result + 15.
+            when `P`.
+                rv_result = rv_result + 16.
+            when `Q`.
+                rv_result = rv_result + 17.
+            when `R`.
+                rv_result = rv_result + 18.
+            when `S`.
+                rv_result = rv_result + 19.
+            when `T`.
+                rv_result = rv_result + 20.
+            when `U`.
+                rv_result = rv_result + 21.
+            when `V`.
+                rv_result = rv_result + 22.
+            when `W`.
+                rv_result = rv_result + 23.
+            when `X`.
+                rv_result = rv_result + 24.
+            when `Y`.
+                rv_result = rv_result + 25.
+            when `Z`.
+                rv_result = rv_result + 26.
+        ENDCASE.
+    index = index + 1.
+  ENDWHILE.
+
   ENDMETHOD.
 ENDCLASS.
