@@ -23,9 +23,9 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
     out->write( zif_abap_course_basics~hello_world( 'Grigor' ) ).
 
     "Task 2
-    data fn type i.
-    data sn type i.
-    data op type char1.
+    DATA fn TYPE i.
+    DATA sn TYPE i.
+    DATA op TYPE char1.
     fn = 18.
     sn = 2.
     op = '+'.
@@ -47,6 +47,10 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
     "Task 6
     out->write( zif_abap_course_basics~get_current_date_time(  ) ).
 
+    "Task 7
+    zif_abap_course_basics~internal_tables(  ).
+
+
 
 
   ENDMETHOD.
@@ -58,21 +62,21 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
     "          iv_second_number TYPE i
     "          iv_operator      TYPE char1
     "RETURNING VALUE(rv_result) TYPE i
-    case iv_operator.
-        when '+'.
-            rv_result = iv_first_number + iv_second_number.
-        when '-'.
-            rv_result = iv_first_number - iv_second_number.
-        when '*'.
-            rv_result = iv_first_number * iv_second_number.
-        when '/'.
-            try.
-                rv_result = iv_first_number / iv_second_number.
-            catch cx_sy_zerodivide.
-                rv_result = cl_abap_math=>min_int4.
-            endtry.
-        when others.
+    CASE iv_operator.
+      WHEN '+'.
+        rv_result = iv_first_number + iv_second_number.
+      WHEN '-'.
+        rv_result = iv_first_number - iv_second_number.
+      WHEN '*'.
+        rv_result = iv_first_number * iv_second_number.
+      WHEN '/'.
+        TRY.
+            rv_result = iv_first_number / iv_second_number.
+          CATCH cx_sy_zerodivide.
             rv_result = cl_abap_math=>min_int4.
+        ENDTRY.
+      WHEN OTHERS.
+        rv_result = cl_abap_math=>min_int4.
 
     ENDCASE.
 
@@ -80,87 +84,87 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~date_parsing.
-  "IMPORTING iv_date          TYPE string
-  "RETURNING VALUE(rv_result) TYPE dats.
-    data month_part type string.
-    data day_part type string.
+    "IMPORTING iv_date          TYPE string
+    "RETURNING VALUE(rv_result) TYPE dats.
+    DATA month_part TYPE string.
+    DATA day_part TYPE string.
     SPLIT iv_date AT space INTO: TABLE DATA(date_parts).
 
-    if strlen( date_parts[ 1 ] ) = 1.
-        day_part = `0` && date_parts[ 1 ].
-    else.
-        day_part = date_parts[ 1 ].
+    IF strlen( date_parts[ 1 ] ) = 1.
+      day_part = `0` && date_parts[ 1 ].
+    ELSE.
+      day_part = date_parts[ 1 ].
     ENDIF.
 
-    if strlen( date_parts[ 2 ] ) > 2.
-        case date_parts[ 2 ].
-            when `January`.
-               month_part = `01`.
-            when `February`.
-               month_part = `02`.
-            when `March`.
-               month_part = `03`.
-            when `April`.
-               month_part = `04`.
-            when `May`.
-               month_part = `05`.
-            when `June`.
-               month_part = `06`.
-            when `July`.
-               month_part = `07`.
-            when `August`.
-               month_part = `08`.
-            when `September`.
-               month_part = `09`.
-            when `October`.
-               month_part = `10`.
-            when `November`.
-               month_part = `11`.
-            when `December`.
-               month_part = `12`.
-        ENDCASE.
+    IF strlen( date_parts[ 2 ] ) > 2.
+      CASE date_parts[ 2 ].
+        WHEN `January`.
+          month_part = `01`.
+        WHEN `February`.
+          month_part = `02`.
+        WHEN `March`.
+          month_part = `03`.
+        WHEN `April`.
+          month_part = `04`.
+        WHEN `May`.
+          month_part = `05`.
+        WHEN `June`.
+          month_part = `06`.
+        WHEN `July`.
+          month_part = `07`.
+        WHEN `August`.
+          month_part = `08`.
+        WHEN `September`.
+          month_part = `09`.
+        WHEN `October`.
+          month_part = `10`.
+        WHEN `November`.
+          month_part = `11`.
+        WHEN `December`.
+          month_part = `12`.
+      ENDCASE.
     ELSEIF strlen( date_parts[ 2 ] ) = 1.
-        month_part = `0` && date_parts[ 2 ].
-    else.
-        month_part = date_parts[ 2 ].
+      month_part = `0` && date_parts[ 2 ].
+    ELSE.
+      month_part = date_parts[ 2 ].
     ENDIF.
 
-    rv_result = conv d( date_parts[ 3 ] && month_part && day_part ).
+    rv_result = CONV d( date_parts[ 3 ] && month_part && day_part ).
   ENDMETHOD.
 
 
   METHOD zif_abap_course_basics~fizz_buzz.
     "RETURNING VALUE(rv_result) TYPE string.
-    data counter type i value 1.
-    data is_mod_3 type string.
+    DATA counter TYPE i VALUE 1.
+    DATA is_mod_3 TYPE string.
 
-    do 100 times.
-        if counter mod 3 <> 0 and counter mod 5 <> 0.
-            rv_result = rv_result && |{ counter }|.
-        else.
-            if counter mod 3 = 0.
-                rv_result = rv_result && `Fizz`.
-            ENDIF.
+    DO 100 TIMES.
+      IF counter MOD 3 <> 0 AND counter MOD 5 <> 0.
+        rv_result = rv_result && |{ counter }|.
+      ELSE.
+        IF counter MOD 3 = 0.
+          rv_result = rv_result && `Fizz`.
+        ENDIF.
 
-            if counter mod 5 = 0.
-                rv_result = rv_result && `Buzz`.
-            ENDif.
-        endif.
-        rv_result = rv_result && ` `.
-        counter = counter + 1.
-    enddo.
+        IF counter MOD 5 = 0.
+          rv_result = rv_result && `Buzz`.
+        ENDIF.
+      ENDIF.
+      rv_result = rv_result && ` `.
+      counter = counter + 1.
+    ENDDO.
   ENDMETHOD.
 
 
   METHOD zif_abap_course_basics~get_current_date_time.
-  "RETURNING VALUE(rv_result) TYPE timestampl.
+    "RETURNING VALUE(rv_result) TYPE timestampl.
     GET TIME STAMP FIELD DATA(lv_timestamp).
     CONVERT TIME STAMP lv_timestamp TIME ZONE sy-zonlo
         INTO TIME DATA(current_time).
-    data current_date type d.
+    DATA current_date TYPE d.
     current_date = sy-datum.
     CONVERT DATE current_date TIME current_time
-        INTO TIME STAMP rv_result time zone sy-zonlo.
+        INTO TIME STAMP rv_result TIME ZONE sy-zonlo.
   ENDMETHOD.
 
 
@@ -170,6 +174,91 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~internal_tables.
+  "EXPORTING et_travel_ids_task7_1 TYPE ltty_travel_id
+  "            et_travel_ids_task7_2 TYPE ltty_travel_id
+  "            et_travel_ids_task7_3 TYPE ltty_travel_id.
+    DATA tmp_uuid TYPE uuid.
+    SELECT SINGLE
+        FROM ZTRAVEL_GVV
+        FIELDS travel_uuid
+        into @tmp_uuid.
+    if sy-subrc = 4.
+        SELECT * FROM ZTRAVEL_GVV INTO TABLE @DATA(lt_ztravel).
+        DELETE ZTRAVEL_GVV FROM TABLE @lt_ztravel.
+        COMMIT WORK AND WAIT.
+
+        INSERT ZTRAVEL_GVV FROM
+        ( SELECT FROM /dmo/travel
+
+            FIELDS  uuid( )          AS travel_uuid,
+                    travel_id        AS travel_id,
+                    agency_id        AS agency_id,
+                    customer_id      AS customer_id,
+                    begin_date       AS begin_date,
+                    end_date         AS end_date,
+                    booking_fee      AS booking_fee,
+                    total_price      AS total_price,
+                    currency_code    AS currency_code,
+                    description      AS description,
+                    CASE status
+                        WHEN 'B' THEN  'A'  " ACCEPTED
+                        WHEN 'X'  THEN 'X' " CANCELLED
+                        ELSE 'O'         " open
+                    END              AS overall_status,
+                    createdby        AS createdby,
+                    createdat        AS createdat,
+                    lastchangedby    AS last_changed_by,
+                    lastchangedat    AS last_changed_at
+        ORDER BY travel_id ).
+        COMMIT WORK AND WAIT.
+    else.
+        SELECT * FROM ZTRAVEL_GVV INTO TABLE @DATA(lt_ztravel1).
+        data lt_ztravel1_line like LINE OF lt_ztravel1.
+
+
+        LOOP AT lt_ztravel1 into lt_ztravel1_line
+                            where agency_id = `070001`
+                                and booking_fee = 20
+                                and currency_code = `JPY`.
+            APPEND VALUE #( travel_id = lt_ztravel1_line-travel_id  ) to et_travel_ids_task7_1.
+
+        endloop.
+
+        "7.2 commented because there is no exch rate and currency_conversion throws an error
+*        SELECT travel_id,
+*                begin_date,
+*                currency_conversion( amount = total_price,
+*                                     source_currency = currency_code,
+*                                     round = 'X',
+*                                     target_currency = 'USD',
+*                                     exchange_rate_date = begin_date ) as amount
+*                 "no exch rate in the db and do not accept error_handling parameter although documented
+*            from ztravel_gvv
+*            INTO TABLE @DATA(lt_ztravel2).
+*
+*         data lt_ztravel2_line like LINE OF lt_ztravel2.
+*
+*         LOOP AT lt_ztravel2 into lt_ztravel2_line
+*                            where amount > 2000.
+*            APPEND VALUE #( travel_id = lt_ztravel2_line-travel_id  ) to et_travel_ids_task7_2.
+*
+*        endloop.
+
+        "7.3
+        DELETE lt_ztravel1 WHERE currency_code <> 'EUR'.
+        sort lt_ztravel1 ASCENDING by total_price begin_date.
+
+
+        LOOP AT lt_ztravel1 into lt_ztravel1_line.
+            if sy-tabix > 10.
+                exit.
+            endif.
+            append value #(  travel_id = lt_ztravel1_line-travel_id  ) to et_travel_ids_task7_3.
+
+        endloop.
+
+
+    ENDIF.
   ENDMETHOD.
 
 
@@ -178,10 +267,10 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~scrabble_score.
-  "IMPORTING iv_word          TYPE string
-  "RETURNING VALUE(rv_result) TYPE i.
+    "IMPORTING iv_word          TYPE string
+    "RETURNING VALUE(rv_result) TYPE i.
 
-  "Version 1
+    "Version 1
 *  DATA(word_length) = strlen( iv_word ).
 *  data index type i.
 *  data char type c.
@@ -249,48 +338,48 @@ CLASS zcl_gvv_abap_course_basics IMPLEMENTATION.
 
     "Version 2
     TYPES: BEGIN OF letter_points,
-                letter type char1,
-                points type i,
+             letter TYPE char1,
+             points TYPE i,
            END OF letter_points.
 
-    TYPES tt_alphabet type SORTED TABLE OF letter_points WITH UNIQUE key letter.
+    TYPES tt_alphabet TYPE SORTED TABLE OF letter_points WITH UNIQUE KEY letter.
 
-    data alphabet type tt_alphabet.
+    DATA alphabet TYPE tt_alphabet.
 
-    APPEND VALUE #( letter = `A` points = 1 ) to alphabet.
-    APPEND VALUE #( letter = `B` points = 2 ) to alphabet.
-    APPEND VALUE #( letter = `C` points = 3 ) to alphabet.
-    APPEND VALUE #( letter = `D` points = 4 ) to alphabet.
-    APPEND VALUE #( letter = `E` points = 5 ) to alphabet.
-    APPEND VALUE #( letter = `F` points = 6 ) to alphabet.
-    APPEND VALUE #( letter = `G` points = 7 ) to alphabet.
-    APPEND VALUE #( letter = `H` points = 8 ) to alphabet.
-    APPEND VALUE #( letter = `I` points = 9 ) to alphabet.
-    APPEND VALUE #( letter = `J` points = 10 ) to alphabet.
-    APPEND VALUE #( letter = `K` points = 11 ) to alphabet.
-    APPEND VALUE #( letter = `L` points = 12 ) to alphabet.
-    APPEND VALUE #( letter = `M` points = 13 ) to alphabet.
-    APPEND VALUE #( letter = `N` points = 14 ) to alphabet.
-    APPEND VALUE #( letter = `O` points = 15 ) to alphabet.
-    APPEND VALUE #( letter = `P` points = 16 ) to alphabet.
-    APPEND VALUE #( letter = `Q` points = 17 ) to alphabet.
-    APPEND VALUE #( letter = `R` points = 18 ) to alphabet.
-    APPEND VALUE #( letter = `S` points = 19 ) to alphabet.
-    APPEND VALUE #( letter = `T` points = 20 ) to alphabet.
-    APPEND VALUE #( letter = `U` points = 21 ) to alphabet.
-    APPEND VALUE #( letter = `V` points = 22 ) to alphabet.
-    APPEND VALUE #( letter = `W` points = 23 ) to alphabet.
-    APPEND VALUE #( letter = `X` points = 24 ) to alphabet.
-    APPEND VALUE #( letter = `Y` points = 25 ) to alphabet.
-    APPEND VALUE #( letter = `Z` points = 26 ) to alphabet.
+    APPEND VALUE #( letter = `A` points = 1 ) TO alphabet.
+    APPEND VALUE #( letter = `B` points = 2 ) TO alphabet.
+    APPEND VALUE #( letter = `C` points = 3 ) TO alphabet.
+    APPEND VALUE #( letter = `D` points = 4 ) TO alphabet.
+    APPEND VALUE #( letter = `E` points = 5 ) TO alphabet.
+    APPEND VALUE #( letter = `F` points = 6 ) TO alphabet.
+    APPEND VALUE #( letter = `G` points = 7 ) TO alphabet.
+    APPEND VALUE #( letter = `H` points = 8 ) TO alphabet.
+    APPEND VALUE #( letter = `I` points = 9 ) TO alphabet.
+    APPEND VALUE #( letter = `J` points = 10 ) TO alphabet.
+    APPEND VALUE #( letter = `K` points = 11 ) TO alphabet.
+    APPEND VALUE #( letter = `L` points = 12 ) TO alphabet.
+    APPEND VALUE #( letter = `M` points = 13 ) TO alphabet.
+    APPEND VALUE #( letter = `N` points = 14 ) TO alphabet.
+    APPEND VALUE #( letter = `O` points = 15 ) TO alphabet.
+    APPEND VALUE #( letter = `P` points = 16 ) TO alphabet.
+    APPEND VALUE #( letter = `Q` points = 17 ) TO alphabet.
+    APPEND VALUE #( letter = `R` points = 18 ) TO alphabet.
+    APPEND VALUE #( letter = `S` points = 19 ) TO alphabet.
+    APPEND VALUE #( letter = `T` points = 20 ) TO alphabet.
+    APPEND VALUE #( letter = `U` points = 21 ) TO alphabet.
+    APPEND VALUE #( letter = `V` points = 22 ) TO alphabet.
+    APPEND VALUE #( letter = `W` points = 23 ) TO alphabet.
+    APPEND VALUE #( letter = `X` points = 24 ) TO alphabet.
+    APPEND VALUE #( letter = `Y` points = 25 ) TO alphabet.
+    APPEND VALUE #( letter = `Z` points = 26 ) TO alphabet.
 
     DATA(word_length) = strlen( iv_word ).
-    data index type i.
-    data char type c.
-    data word_tmp type string.
+    DATA index TYPE i.
+    DATA char TYPE c.
+    DATA word_tmp TYPE string.
     word_tmp = iv_word.
-    translate word_tmp to UPPER CASE.
-    while index < word_length.
+    TRANSLATE word_tmp TO UPPER CASE.
+    WHILE index < word_length.
       char = word_tmp+index(1).
       rv_result = rv_result + alphabet[ letter = char ]-points.
       index = index + 1.
